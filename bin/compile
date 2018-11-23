@@ -34,7 +34,10 @@ if [ ! -f $CACHE_DIR/PURGED_CACHE_V1 ]; then
 fi
 
 PACKAGES="
+libusb++-dev
+libusb-1.0-0
 libusb-1.0-0-dev
+libusb-dev
 "
 
 APT_CACHE_DIR="$CACHE_DIR/apt/cache"
