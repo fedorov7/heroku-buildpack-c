@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+echo "-----> Install fake sudo command"
+mkdir -p $BUILD_DIR/.apt/usr/bin/
+install $LP_DIR/vendor/sudo $BUILD_DIR/.apt/usr/bin/sudo

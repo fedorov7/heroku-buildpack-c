@@ -91,8 +91,8 @@ find $BUILD_DIR/.apt -type f -ipath '*/pkgconfig/*.pc' | xargs --no-run-if-empty
 find $BUILD_DIR/.apt -type f -ipath '*/pkgconfig/*.pc' | xargs --no-run-if-empty -n 1 sed -i -e 's!^libdir=/\(.*\)$!libdir='"$BUILD_DIR"'/.apt/\1!g'
 find $BUILD_DIR/.apt -type f -ipath '*/pkgconfig/*.pc' | xargs --no-run-if-empty -n 1 sed -i -e 's!^includedir=/\(.*\)$!includedir='"$BUILD_DIR"'/.apt/\1!g'
 
-find $BUILD_DIR/.apt -type l -ipath '*/lib/*.so' -print0 | while read -d $'\0' link
+find $BUILD_DIR/.apt -type l -ipath '*/lib/*.so' -exec test ! -e {} \; -print0 | while read -d $'\0' link
 do
-  topic "Fix library symlink "$link" for $(readlink -f $link)"
+  topic "Fix broken symlink "$link" for $(readlink -f $link)"
   ln -sfn "$BUILD_DIR/.apt$(readlink -f $link)" "$link"
 done

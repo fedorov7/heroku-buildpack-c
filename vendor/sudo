@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+echo "sudo execution: $@ ($# arguments)"
+bash -c '"$@"'

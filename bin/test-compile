@@ -17,8 +17,12 @@ LP_DIR=`cd $(dirname $0); cd ..; pwd`
 BIN_DIR=$(cd "$(dirname "$0")"; pwd) # absolute path
 
 source $BIN_DIR/steps/apt
+source $BIN_DIR/steps/sudo
 
 cd ${BUILD_DIR}
 
 echo "-----> Compiling tests with Make"
+make
+make install
+make clean
 make test
