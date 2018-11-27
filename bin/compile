@@ -37,7 +37,6 @@ fi
 
 PACKAGES="
 libusb-1.0-0-dev
-libudev-dev
 "
 
 APT_CACHE_DIR="$CACHE_DIR/apt/cache"
@@ -98,6 +97,15 @@ export | grep -E -e ' (PATH|LD_LIBRARY_PATH|LIBRARY_PATH|INCLUDE_PATH|CPATH|CPPP
 
 topic "Rewrite package-config files"
 find $BUILD_DIR/.apt -type f -ipath '*/pkgconfig/*.pc' | xargs --no-run-if-empty -n 1 sed -i -e 's!^prefix=\(.*\)$!prefix='"$BUILD_DIR"'/.apt\1!g'
+find $BUILD_DIR/.apt -type f -ipath '*/pkgconfig/*.pc' | xargs --no-run-if-empty -n 1 sed -i -e 's!^exec_prefix=/\(.*\)$!exec_prefix='"$BUILD_DIR"'/.apt/\1!g'
+find $BUILD_DIR/.apt -type f -ipath '*/pkgconfig/*.pc' | xargs --no-run-if-empty -n 1 sed -i -e 's!^libdir=/\(.*\)$!libdir='"$BUILD_DIR"'/.apt/\1!g'
+find $BUILD_DIR/.apt -type f -ipath '*/pkgconfig/*.pc' | xargs --no-run-if-empty -n 1 sed -i -e 's!^includedir=/\(.*\)$!includedir='"$BUILD_DIR"'/.apt/\1!g'
+
+find $BUILD_DIR/.apt -type l -ipath '*/lib/*.so' -print0 | while read -d $'\0' link
+do
+  topic "Fix library symlink "$link" for $(readlink -f $link)"
+  ln -sfn "$BUILD_DIR/.apt$(readlink -f $link)" "$link"
+done
 
 cd $BUILD_DIR
 
